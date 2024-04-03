@@ -9,6 +9,8 @@ from imagebind.models.multimodal_preprocessors import SimpleTokenizer
 from pydantic import BaseModel
 import torch
 
+from src.utils.video_utils import copy_audio
+
 
 BPE_PATH = "./omega/bpe/bpe_simple_vocab_16e6.txt.gz"
 
@@ -44,7 +46,7 @@ class ImageBind:
         self.imagebind.to(self.device)
 
     def get_inputs(self, descriptions: List[str], video_files: List[BinaryIO]) -> dict:
-        audio_files = [video_utils.copy_audio(video_file.name) for video_file in video_files]
+        audio_files = [copy_audio(video_file.name) for video_file in video_files]
         audio_filepaths = [audio_file.name for audio_file in audio_files]
         video_filepaths = [video_file.name for video_file in video_files]
         try:
